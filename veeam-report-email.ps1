@@ -29,9 +29,9 @@ $SMTPPort = "25"
 $emailEnableSSL = $false
 $emailUser = ""
 $emailPass = ""
-$From = "phelipeg1@gmail.com"
-$To = "phelipeg1@gmail.com"
-$Cc = "pwgarcia@stefanini.com"
+$From = "email@email.com"
+$To = "email@email.com"
+$Cc = "email@email.com"
 # Send HTML report as attachment (else HTML report is body)
 $emailAttach = $false
 # Email Subject
