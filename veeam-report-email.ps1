@@ -9,7 +9,7 @@ $vbrServer = "localhost"
 # 24, 48, "Weekly", "Monthly"
 $reportMode = 24
 # Report Title
-$rptTitle = "Valgroup - SP8 - Veeam Status Report - Last 24h"
+$rptTitle = "Veeam Status Report - Last 24h"
 # Show VBR Server name in report header
 $showVBR = $true
 # HTML Report Width (Percent)
@@ -24,14 +24,14 @@ $launchHTML = $false
 
 # Email configuration
 $sendEmail = $true
-$SMTPServer = "valgroupco-com.mail.protection.outlook.com"
+$SMTPServer = "SMTP SERVER"
 $SMTPPort = "25"
 $emailEnableSSL = $false
 $emailUser = ""
 $emailPass = ""
-$From = "noreply@valgroupco.com"
-$To = "zezito.junior@valgroupco.com"
-$Cc = "pwgarcia@stefanini.com"
+$From = "EMAIL@EMAIL.com"
+$To = "EMAIL@EMAIL.com"
+$Cc = "EMAIL@EMAIL.com"
 # Send HTML report as attachment (else HTML report is body)
 $emailAttach = $false
 # Email Subject
