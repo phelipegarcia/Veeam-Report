@@ -3,13 +3,13 @@
 #Requires -Module @{ModuleName="Veeam.Backup.PowerShell"; ModuleVersion="1.0"}
 
 #region User-Variables
-# VBR Server (Server Name, FQDN or IP)
-$vbrServer = "localhost"
+# VBR Server FQDN
+$vbrServer = (Get-CimInstance -ClassName Win32_ComputerSystem).Name
 # Report mode (RPO) - valid modes: any number of hours, Weekly or Monthly
 # 24, 48, "Weekly", "Monthly"
 $reportMode = 24
 # Report Title
-$rptTitle = "Veeam Status Report - Last 24h"
+$rptTitle = "LAB - Veeam Status Report - Last 24h"
 # Show VBR Server name in report header
 $showVBR = $true
 # HTML Report Width (Percent)
@@ -18,20 +18,20 @@ $rptWidth = 97
 # Save HTML output to a file
 $saveHTML = $true
 # HTML File output path and filename
-$pathHTML = "V:\Report\MyVeeamReport_$(Get-Date -format dd-MM-yyyy).htm"
+$pathHTML = "E:\Report\MyVeeamReport_$(Get-Date -format dd-MM-yyyy).htm"
 # Launch HTML file after creation
 $launchHTML = $false
 
 # Email configuration
 $sendEmail = $true
-$SMTPServer = "SMTP SERVER"
+$SMTPServer = "smtp.gmail.com"
 $SMTPPort = "25"
 $emailEnableSSL = $false
 $emailUser = ""
 $emailPass = ""
-$From = "EMAIL@EMAIL.com"
-$To = "EMAIL@EMAIL.com"
-$Cc = "EMAIL@EMAIL.com"
+$From = "phelipeg1@gmail.com"
+$To = "phelipeg1@gmail.com"
+$Cc = "pwgarcia@stefanini.com"
 # Send HTML report as attachment (else HTML report is body)
 $emailAttach = $false
 # Email Subject
@@ -289,12 +289,21 @@ $licenseWarn = 90
 #endregion
 
 #region VersionInfo
-$MVRversion = "11.0.0"
-# Version 11.0.0 - Daniel Niccoli
-# Fixed script for Veeam B&R 11
+$MVRversion = "12.0.0"
+# Version 12.0.0 - Phelipe Garcia
+# Fixed script for Veeam B&R 12
 # Added Cluster exclusion
 # Reformatted code
 # Changed Licenes retrieval code
+# Fixed Bugs on V12
+
+#Veeam Server Version
+# $VeeamVersion
+
+$CoreDllPath = (Get-ItemProperty -Path "HKLM:\Software\Veeam\Veeam Backup and Replication\" | Select-Object -ExpandProperty CorePath) + "Veeam.Backup.Core.dll"
+$CoreDll = Get-Item -Path $CoreDllPath
+$VeeamVersion = $CoreDll.VersionInfo.ProductVersion + " - " + $CoreDll.VersionInfo.Comments
+
 
 #region Connect
 Import-Module Veeam.Backup.PowerShell -WarningAction SilentlyContinue
@@ -1209,7 +1218,7 @@ $HTMLbreak = @"
 $footerObj = @"
 <table>
                                 <tr>
-                                        <td style="height: 15px;background-color: #ffffff;border: none;color: #626365;font-size: 10px;text-align:center;">Veeam Report Platform maintained by <a href="https://github.com/phelipegarcia" target="_blank">https://github.com/phelipegarcia</a></td>
+                                        <td style="height: 15px;background-color: #ffffff;border: none;color: #626365;font-size: 10px;text-align:center;">Veeam Report Platform maintained by Phelipe Garcia - <a href="https://github.com/phelipegarcia/Veeam-Report" target="_blank">https://github.com/phelipegarcia/Veeam-Report</a></td>
                                 </tr>
                         </table>
                 </center>
@@ -4164,37 +4173,10 @@ If ($htmlOutput -match "#FB9895") {
 }
 #endregion
 
-#region Output
-# Send Report via Email
-#If ($sendEmail) {
-#    $smtp = New-Object System.Net.Mail.SmtpClient($emailHost, $emailPort)
-#    $smtp.Credentials = New-Object System.Net.NetworkCredential($emailUser, $emailPass)
-#    $smtp.EnableSsl = $emailEnableSSL
-#    $msg = New-Object System.Net.Mail.MailMessage($emailFrom, $emailTo)
-#    $msg.Subject = $emailSubject
-#    If ($emailAttach) {
-#        $body = "Veeam Report Attached"
-#        $msg.Body = $body
-#        $tempFile = "C:\temp\$($rptTitle)_$(Get-Date -format MMddyyyy_hhmmss).htm"
-#        $htmlOutput | Out-File $tempFile
-#        $attachment = new-object System.Net.Mail.Attachment $tempFile
-#        $msg.Attachments.Add($attachment)
-#    } Else {
-#        $body = $htmlOutput
-#        $msg.Body = $body
-#        $msg.isBodyhtml = $true
-#    }
-#    $smtp.send($msg)
-#    If ($emailAttach) {
-#        $attachment.dispose()
-#        Remove-Item $tempFile
-#    }
-#}
-
 If ($sendEmail) {
     If ($emailAttach) {
         $Body = "Veeam Report Attached"
-        $Attachment = "V:\Report\MyVeeamReport_$(Get-Date -format dd-MM-yyyy).htm"
+        $Attachment = "E:\Report\MyVeeamReport_$(Get-Date -format dd-MM-yyyy).htm"
         Send-MailMessage -From $From -to $To -Cc $Cc -Subject $Subject -Body $Body -BodyAsHtml -SmtpServer $SMTPServer -Port $SMTPPort -UseSsl -Attachments $Attachment
 }
 }
