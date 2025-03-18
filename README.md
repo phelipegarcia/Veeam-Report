@@ -23,6 +23,8 @@ $wkhtmltopdfPath - wkhtmlpdf path (Used to convert html to PDF)
 
 $pathPDF - PDF File output path and filename
 
+Veeam Logo - In line 1118 the Veeam logo is configured, download the image and add it to the folder where the scripts are located.
+
 
 ## PART 2 - Send the email with the report file attached
 
