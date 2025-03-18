@@ -2,6 +2,10 @@
 
 Script to send Veeam Backup & Replication status report by email.
 
+# Disclaimer
+
+The veeam-report.ps1 script was created based on the "MyVeeamReport_VBRv7_v1.2.ps" project by Shawn Masterson. He created this project for Veeam v11 but abandoned it in 2018.
+
 ## PART 1 - Generate the report file
 
 ### How to Configure the script veeam-report.ps1
